@@ -10,6 +10,7 @@ import "reflect-metadata";
 import { Article } from './src/entities/Article';
 import { Person } from './src/entities/Person';
 import { PersonResolver } from './src/resolvers/PersonResolver';
+import { ArticleResolver } from './src/resolvers/ArticleResolver';
 
 export const app = express();
 
@@ -36,6 +37,7 @@ async function main() {
   // Create the graphql schema
   const schema: GraphQLSchema = await buildSchema({
     resolvers: [
+      ArticleResolver,
       PersonResolver
     ],
     pubSub: new PubSub()
@@ -75,8 +77,9 @@ function connectDb() {
     host: "localhost",
     port: 3306,
     username: "root",
-    password: "admin",
-    database: "test",
+    password: "piraatkat",
+    database: "graphql_test",
+    migrations: ['src/migrations/**.ts'],
     entities: [
       Article,
       Person

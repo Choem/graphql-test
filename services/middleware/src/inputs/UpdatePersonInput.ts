@@ -1,7 +1,8 @@
-import { Field, Int } from "type-graphql";
+import { Field, Int, InputType } from "type-graphql";
 import { MaxLength, Min, Max, IsNotEmpty } from "class-validator";
 import { PersonGender } from "../enums/PersonGender";
 
+@InputType()
 export class UpdatePersonInput {
   @Field()
   @IsNotEmpty()
