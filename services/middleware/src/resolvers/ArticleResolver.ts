@@ -1,48 +1,72 @@
 import { Resolver, Query, Mutation, Int, Arg, Args } from "type-graphql";
 import { Article } from "../entities/Article";
-import { ArticleService } from "../services/ArticleService";
 import { CreateArticleInput } from "../inputs/CreateArticleInput";
 import { UpdateArticleInput } from "../inputs/UpdateArticleInput";
 import { PaginateArticlesArgs } from "../arguments/PaginateArticlesArgs";
-import Container from "typedi";
+import { Repository } from "typeorm";
+import { getDbConnection } from "../..";
+import { ArticleListResult } from "../results/ArticleListResult";
 
 @Resolver(of => Article)
 export class ArticleResolver {
-  articleService: ArticleService;
+  articleRepository: Repository<Article>;
 
   constructor() {
-    this.articleService = Container.get(ArticleService);
+    this.articleRepository = getDbConnection().getRepository(Article);
   }
 
-  @Query(returns => [Article])
+  @Query(returns => ArticleListResult)
   async listArticles() {
-    return this.articleService.list();
+    const [articles, total] = await this.articleRepository.findAndCount();
+
+    return {
+      articles,
+      count: total
+    };
   }
 
-  @Query(returns => [Article])
+  @Query(returns => ArticleListResult)
   async paginateArticles(@Args() paginateArticlesArgs: PaginateArticlesArgs) {
-    return this.articleService.paginate(paginateArticlesArgs);
+    const [articles, total] = await this.articleRepository
+      .createQueryBuilder('article')
+      .skip(paginateArticlesArgs.pageSize * paginateArticlesArgs.pageIndex)
+      .take(paginateArticlesArgs.pageSize)
+      .where('LOWER(article.name) like :name', { name: `%${paginateArticlesArgs.filter}%`.toLowerCase() })
+      .getManyAndCount();
+
+    return {
+      articles,
+      count: total,
+      pageIndex: paginateArticlesArgs.pageIndex,
+      pageSize: paginateArticlesArgs.pageSize
+    };
   }
 
   @Mutation(returns => Int)
   async createArticle(@Arg('input') createArticleInput: CreateArticleInput) {
-    return await this.articleService.create(createArticleInput);
+    return await this.articleRepository.create(createArticleInput);
   }
 
   @Query(returns => Article)
   async findArticleById(@Arg('id') id: number) {
-    return await this.articleService.findById(id);
+    return await this.articleRepository.findOne({
+      where: {
+        id
+      }
+    });
   }
 
   @Mutation(returns => Article)
   async updateArticle(@Arg('input') updateArticleInput: UpdateArticleInput) {
-    return await this.articleService.update(updateArticleInput);
+    return await this.articleRepository.update(updateArticleInput.id, {
+      name: updateArticleInput.name,
+    });
   }
 
   @Mutation(returns => Boolean)
   async deleteArticleById(@Arg('id') id: number) {
     try {
-      await this.articleService.delete(id);
+      await this.articleRepository.delete({ id });
       return true;
     } catch {
       return false;

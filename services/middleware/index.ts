@@ -10,11 +10,10 @@ import { PersonResolver } from './src/resolvers/PersonResolver';
 import { ArticleResolver } from './src/resolvers/ArticleResolver';
 
 export const app = express();
-
-export const httpServer = app.listen(4000, async () => {
+export const httpServerPort = 4000;
+export const httpServer = app.listen(httpServerPort, async () => {
   await main();
-
-  console.info('Listening on port 4000');
+  console.info(`Listening on port ${httpServerPort}`);
 });
 
 let dbConnection: Connection;
@@ -63,7 +62,6 @@ async function main() {
     },
     formatError: (err) => {
       console.log(err);
-
       return err;
     }
   });
