@@ -1,9 +1,11 @@
+import { Service } from "typedi";
 import { BaseService } from "./BaseService";
 import { Article } from "../entities/Article";
 import { CreateArticleInput } from "../inputs/CreateArticleInput";
 import { UpdateArticleInput } from "../inputs/UpdateArticleInput";
 import { PaginateArticlesArgs } from "../arguments/PaginateArticlesArgs";
 
+@Service()
 export class ArticleService extends BaseService {
   constructor() {
     super();

@@ -1,3 +1,4 @@
+import { Service } from "typedi";
 import { BaseService } from './BaseService';
 import { Person } from '../entities/Person';
 import { CreatePersonInput } from '../inputs/CreatePersonInput';
@@ -5,6 +6,7 @@ import { PaginatePersonsArgs } from '../arguments/PaginatePersonsArgs';
 import { Like } from 'typeorm';
 import { UpdatePersonInput } from '../inputs/UpdatePersonInput';
 
+@Service()
 export class PersonService extends BaseService {
   constructor() {
     super();

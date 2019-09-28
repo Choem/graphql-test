@@ -1,5 +1,6 @@
 import { Field, InputType, Int } from "type-graphql";
 import { IsNotEmpty, MaxLength, MinLength } from "class-validator";
+import { Article } from "src/entities/Article";
 
 @InputType()
 export class CreateArticleInput {
