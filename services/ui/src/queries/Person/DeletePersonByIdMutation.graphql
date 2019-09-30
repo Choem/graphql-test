@@ -1,3 +1,3 @@
-mutation DeletePersonById($id: Int!) {
+mutation DeletePersonById($id: Float!) {
   deletePersonById(id: $id)
 }

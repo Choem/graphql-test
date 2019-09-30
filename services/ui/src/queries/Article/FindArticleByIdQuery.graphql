@@ -1,4 +1,4 @@
-query FindArticleById($id: Int!) {
+query FindArticleById($id: Float!) {
   findArticleById(id: $id) {
     id,
     name,

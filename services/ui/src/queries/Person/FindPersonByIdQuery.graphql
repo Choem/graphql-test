@@ -1,9 +1,9 @@
-query FindPersonById($id: Int!) {
+query FindPersonById($id: Float!) {
   findPersonById(id: $id) {
     id,
     name,
     age,
-    personGender,
+    gender,
     articles {
       id,
       name,

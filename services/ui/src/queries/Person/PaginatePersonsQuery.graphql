@@ -1,10 +1,10 @@
-query PaginatePersons($filter: String, pageIndex: Int!, pageSize: Int!) {
+query PaginatePersons($filter: String, $pageIndex: Int!, $pageSize: Int!) {
   paginatePersons(filter: $filter, pageIndex: $pageIndex, pageSize: $pageSize) {
     persons {
       id,
       name,
       age,
-      personGender
+      gender
     },
     count,
     pageIndex,

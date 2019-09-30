@@ -1,8 +1,8 @@
-mutation UpdatePerson() {
-  updatePerson() {
+mutation UpdatePerson($id: Int!, $name: String!, $age: Int!, $gender: PersonGender!) {
+  updatePerson(input: { id: $id, name: $name, age: $age, gender: $gender }) {
     id,
     name,
     age,
-    personGender
+    gender
   }
 }

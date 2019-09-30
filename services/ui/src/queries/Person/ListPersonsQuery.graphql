@@ -1,10 +1,10 @@
-query ListPersons() {
-  listPersons() {
+query ListPersons {
+  listPersons {
     persons {
       id,
       name,
       age,
-      personGender
+      gender
     },
     count
   }

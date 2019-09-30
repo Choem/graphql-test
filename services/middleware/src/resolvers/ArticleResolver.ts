@@ -42,7 +42,7 @@ export class ArticleResolver {
     };
   }
 
-  @Mutation(returns => Int)
+  @Mutation(returns => Article)
   async createArticle(@Arg('input') createArticleInput: CreateArticleInput) {
     return await this.articleRepository.create(createArticleInput);
   }

@@ -42,7 +42,7 @@ export class PersonResolver {
     };
   }
 
-  @Mutation(returns => Int)
+  @Mutation(returns => Person)
   async createPerson(@Arg('input') createPersonInput: CreatePersonInput) {
     return await this.personRepository.create(createPersonInput);
   }
@@ -70,7 +70,7 @@ export class PersonResolver {
     return await this.personRepository.update(updatePersonInput.id, {
       name: updatePersonInput.name,
       age: updatePersonInput.age,
-      gender: updatePersonInput.personGender
+      gender: updatePersonInput.gender
     });
   }
 

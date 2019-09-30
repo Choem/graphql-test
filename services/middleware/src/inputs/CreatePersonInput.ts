@@ -14,5 +14,5 @@ export class CreatePersonInput {
   age!: number;
 
   @Field(type => PersonGender)
-  personGender!: PersonGender;
+  gender!: PersonGender;
 }

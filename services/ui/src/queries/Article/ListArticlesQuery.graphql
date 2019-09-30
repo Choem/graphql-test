@@ -1,5 +1,5 @@
-query ListArticles() {
-  listArticles() {
+query ListArticles {
+  listArticles {
     articles {
       id,
       name,

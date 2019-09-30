@@ -3,7 +3,7 @@ query FindPersonByName($name: String!) {
     id,
     name,
     age,
-    personGender,
+    gender,
     articles {
       id,
       name,

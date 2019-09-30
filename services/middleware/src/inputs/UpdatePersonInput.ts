@@ -4,7 +4,7 @@ import { PersonGender } from "../enums/PersonGender";
 
 @InputType()
 export class UpdatePersonInput {
-  @Field()
+  @Field(type => Int)
   @IsNotEmpty()
   id!: number;
 
@@ -18,5 +18,5 @@ export class UpdatePersonInput {
   age!: number;
 
   @Field(type => PersonGender)
-  personGender!: PersonGender;
+  gender!: PersonGender;
 }

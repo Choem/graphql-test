@@ -1,5 +1,5 @@
-mutation UpdateArticle($name: String!) {
-  updateArticle(name: $name) {
+mutation UpdateArticle($id: Int!, $authorId: Int!, $name: String!, $description: String!) {
+  updateArticle(input: { id: $id, authorId: $authorId, name: $name, description: $description }) {
     id,
     name,
     description  
