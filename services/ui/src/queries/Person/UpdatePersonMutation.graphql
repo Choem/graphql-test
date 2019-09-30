@@ -1,0 +1,8 @@
+mutation UpdatePerson() {
+  updatePerson() {
+    id,
+    name,
+    age,
+    personGender
+  }
+}

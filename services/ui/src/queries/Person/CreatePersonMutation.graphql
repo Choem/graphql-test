@@ -1,0 +1,5 @@
+mutation CreatePerson($name: String!, $age: Int!, $personGender: Int!) {
+  createPerson(name: $name, age: $age, personGender: $personGender) {
+    id
+  }
+}

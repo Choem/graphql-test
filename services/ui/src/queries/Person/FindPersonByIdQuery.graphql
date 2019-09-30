@@ -1,0 +1,13 @@
+query FindPersonById($id: Int!) {
+  findPersonById(id: $id) {
+    id,
+    name,
+    age,
+    personGender,
+    articles {
+      id,
+      name,
+      createdAt
+    }
+  }
+}

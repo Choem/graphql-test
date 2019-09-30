@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { createRef, useState } from 'react';
 
 import Paper from '@material-ui/core/Paper';
-import { makeStyles, Theme, createStyles, Table, TableHead, TableRow, TableCell, TableBody, Fab, Typography, Button } from '@material-ui/core';
+import { makeStyles, Theme, createStyles, Table, TableHead, TableRow, TableCell, TableBody, Fab, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, Select, MenuItem, DialogActions } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import PersonOverviewCreateDialog from './PersonOverviewCreateDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -34,15 +33,35 @@ const useStyles = makeStyles((theme: Theme) =>
 const PersonOverviewTable = () => {
     const classes = useStyles();
     const rows: any = [];
-    const [isCreateDialogOpen, setCreateDialogOpen] = React.useState(false);
 
-    const handleCreateDialogClickOpen = () => {
-        setCreateDialogOpen(true);
+    const [values, setValues] = useState({
+        name: '',
+        age: null,
+        gender: 0
+    });
+    const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleCreatePerson = async () => {
+        setIsLoading(true);
+        // TODO: Generate GraphQL call
+        setIsOpen(false);
     };
 
-    const handleCreateDialogClose = () => {
-        setCreateDialogOpen(false);
+    const handleChange = (event: React.ChangeEvent<{ name?: string, value: unknown }>) => {
+        setValues(oldValues => ({
+            ...oldValues,
+            [event.target.name as string]: event.target.value
+        }));
     };
+
+    const handleOpen = () => {
+        setIsOpen(true);
+    };
+
+    const handleClose = () => {
+        setIsOpen(false);
+    }
 
     const renderTable = () => (
         <Paper className={classes.paper}>
@@ -95,7 +114,7 @@ const PersonOverviewTable = () => {
                     className={classes.addButton}
                     color="primary"
                     variant="contained"
-                    onClick={handleCreateDialogClickOpen}>
+                    onClick={handleOpen}>
                     Add person
                 </Button>
             </TableCell>
@@ -103,7 +122,36 @@ const PersonOverviewTable = () => {
     );
 
     const renderDialogs = () => (
-        <PersonOverviewCreateDialog open={open} onClose={handleCreateDialogClose} />
+        <Dialog onClose={handleClose} aria-labelledby="create-person-dialog-title" open={isOpen}>
+            <DialogTitle id="create-person-dialog-title">Create a new person</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    To create a new person fill in all required fields.
+        </DialogContentText>
+                <TextField autoFocus margin="dense" id="name" label="Name" type="text" fullWidth />
+                <TextField margin="dense" id="age" label="age" type="number" fullWidth />
+                <Select
+                    value={values.gender}
+                    onChange={handleChange}
+                    inputProps={{
+                        name: 'gender',
+                        id: 'gender'
+                    }}
+                >
+                    <MenuItem value={0}>Male</MenuItem>
+                    <MenuItem value={1}>Female</MenuItem>
+                    <MenuItem value={2}>Attack Helicopter</MenuItem>
+                </Select>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                    Cancel
+            </Button>
+                <Button onClick={handleCreatePerson} color="primary">
+                    Create
+            </Button>
+            </DialogActions>
+        </Dialog>
     );
 
     const renderFab = () => (

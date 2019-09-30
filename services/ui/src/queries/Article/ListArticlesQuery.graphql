@@ -1,0 +1,13 @@
+query ListArticles() {
+  listArticles() {
+    articles {
+      id,
+      name,
+      createdAt,
+      author {
+        name
+      }
+    },
+    count
+  }
+}

@@ -1,0 +1,13 @@
+query FindPersonByName($name: String!) {
+  findPersonByName(name: $name) {
+    id,
+    name,
+    age,
+    personGender,
+    articles {
+      id,
+      name,
+      createdAt
+    }
+  }
+}

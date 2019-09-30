@@ -1,0 +1,15 @@
+query PaginateArticles($filter: String, $pageIndex: Int!, $pageSize: Int!) {
+  paginateArticles(filter: $filter, pageIndex: $pageIndex, pageSize: $pageSize) {
+    articles {
+      id,
+      name,
+      createdAt,
+      author {
+        name
+      }
+    },
+    count,
+    pageIndex,
+    pageSize
+  }
+}

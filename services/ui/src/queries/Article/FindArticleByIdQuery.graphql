@@ -1,0 +1,12 @@
+query FindArticleById($id: Int!) {
+  findArticleById(id: $id) {
+    id,
+    name,
+    description,
+    createdAt,
+    author {
+      id,
+      name
+    }
+  }
+}

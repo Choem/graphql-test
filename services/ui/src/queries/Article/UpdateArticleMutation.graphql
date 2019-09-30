@@ -1,0 +1,7 @@
+mutation UpdateArticle($name: String!) {
+  updateArticle(name: $name) {
+    id,
+    name,
+    description  
+  }
+}
