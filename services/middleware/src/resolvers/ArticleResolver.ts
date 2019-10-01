@@ -44,7 +44,7 @@ export class ArticleResolver {
 
   @Mutation(returns => Article)
   async createArticle(@Arg('input') createArticleInput: CreateArticleInput) {
-    return await this.articleRepository.create(createArticleInput);
+    return await this.articleRepository.save(createArticleInput);
   }
 
   @Query(returns => Article)

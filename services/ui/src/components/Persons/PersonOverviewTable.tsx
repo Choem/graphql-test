@@ -1,8 +1,9 @@
-import React, { createRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import Paper from '@material-ui/core/Paper';
-import { makeStyles, Theme, createStyles, Table, TableHead, TableRow, TableCell, TableBody, Fab, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, Select, MenuItem, DialogActions } from '@material-ui/core';
+import { makeStyles, Theme, createStyles, Table, TableHead, TableRow, TableCell, TableBody, Fab, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, Select, MenuItem, DialogActions, CircularProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import { useCreatePersonMutation, PersonGender } from '../../generated/graphql';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -22,30 +23,55 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: theme.spacing(1),
             marginBottom: theme.spacing(1)
         },
+        progress_container: {
+            flex: 1,
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        progress: {
+            margin: theme.spacing(2)
+        },
         fab: {
             position: 'fixed',
             bottom: theme.spacing(2),
             right: theme.spacing(2),
+        },
+        genderSelect: {
+            marginTop: theme.spacing(3),
+            marginBottom: theme.spacing(1)
         }
     })
 );
 
+interface PersonOverViewTableRow {
+    id: number;
+    name: string;
+    age: number;
+    gender: PersonGender;
+}
+
 const PersonOverviewTable = () => {
     const classes = useStyles();
-    const rows: any = [];
+    const rows: PersonOverViewTableRow[] = [];
+
+    const createPersonMutation = useCreatePersonMutation();
 
     const [values, setValues] = useState({
         name: '',
         age: null,
-        gender: 0
+        gender: PersonGender.Male
     });
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleCreatePerson = async () => {
         setIsLoading(true);
-        // TODO: Generate GraphQL call
-        setIsOpen(false);
+        // await createPersonMutation({ ...values });
+        setTimeout(() => {
+            setIsOpen(false);
+            setIsLoading(false);
+        }, 250);
     };
 
     const handleChange = (event: React.ChangeEvent<{ name?: string, value: unknown }>) => {
@@ -125,23 +151,7 @@ const PersonOverviewTable = () => {
         <Dialog onClose={handleClose} aria-labelledby="create-person-dialog-title" open={isOpen}>
             <DialogTitle id="create-person-dialog-title">Create a new person</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    To create a new person fill in all required fields.
-        </DialogContentText>
-                <TextField autoFocus margin="dense" id="name" label="Name" type="text" fullWidth />
-                <TextField margin="dense" id="age" label="age" type="number" fullWidth />
-                <Select
-                    value={values.gender}
-                    onChange={handleChange}
-                    inputProps={{
-                        name: 'gender',
-                        id: 'gender'
-                    }}
-                >
-                    <MenuItem value={0}>Male</MenuItem>
-                    <MenuItem value={1}>Female</MenuItem>
-                    <MenuItem value={2}>Attack Helicopter</MenuItem>
-                </Select>
+                {renderCreatePersonDialogContent()}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
@@ -153,6 +163,40 @@ const PersonOverviewTable = () => {
             </DialogActions>
         </Dialog>
     );
+
+    const renderCreatePersonDialogContent = () => {
+        if (isLoading) {
+            return (
+                <div className={classes.progress_container}>
+                    <CircularProgress className={classes.progress} />
+                </div>
+            );
+        }
+
+        return (
+            <>
+                <DialogContentText>
+                    To create a new person fill in all required fields.
+                </DialogContentText>
+                <TextField autoFocus margin="dense" id="name" label="Name" type="text" fullWidth />
+                <TextField margin="dense" id="age" label="Age" type="number" fullWidth />
+                <Select
+                    className={classes.genderSelect}
+                    fullWidth
+                    value={values.gender}
+                    onChange={handleChange}
+                    inputProps={{
+                        name: 'gender',
+                        id: 'gender'
+                    }}
+                >
+                    <MenuItem value={"MALE"}>Male</MenuItem>
+                    <MenuItem value={"FEMALE"}>Female</MenuItem>
+                    <MenuItem value={"ATTACK_HELICOPTER"}>Attack Helicopter</MenuItem>
+                </Select>
+            </>
+        );
+    };
 
     const renderFab = () => (
         <Fab color="primary" aria-label="add" className={classes.fab}>

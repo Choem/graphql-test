@@ -44,7 +44,7 @@ export class PersonResolver {
 
   @Mutation(returns => Person)
   async createPerson(@Arg('input') createPersonInput: CreatePersonInput) {
-    return await this.personRepository.create(createPersonInput);
+    return await this.personRepository.save(createPersonInput);
   }
 
   @Query(returns => Person)

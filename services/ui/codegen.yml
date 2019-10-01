@@ -4,8 +4,12 @@ documents:
   - "src/queries/**/*.graphql"
 generates:
   ./src/generated/graphql.tsx:
+    hooks:
+      afterOneFileWrite:
+        - prettier --write
     plugins:
       - typescript
+      - typescript-operations
       - typescript-react-apollo
     config:
       withHooks: true
