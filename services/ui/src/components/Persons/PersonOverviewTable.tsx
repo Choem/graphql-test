@@ -57,28 +57,23 @@ const PersonOverviewTable = () => {
 
     const createPersonMutation = useCreatePersonMutation();
 
-    const [values, setValues] = useState({
-        name: '',
-        age: null,
-        gender: PersonGender.Male
-    });
+    const [inputName, setInputName] = useState<string>('');
+    const [inputAge, setInputAge] = useState<number | null>(null);
+    const [inputGender, setInputGender] = useState<PersonGender>(PersonGender.Male);
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleCreatePerson = async () => {
         setIsLoading(true);
-        // await createPersonMutation({ ...values });
+        await createPersonMutation({
+            name: inputName,
+            age: inputAge,
+            gender: inputGender
+        });
         setTimeout(() => {
             setIsOpen(false);
             setIsLoading(false);
         }, 250);
-    };
-
-    const handleChange = (event: React.ChangeEvent<{ name?: string, value: unknown }>) => {
-        setValues(oldValues => ({
-            ...oldValues,
-            [event.target.name as string]: event.target.value
-        }));
     };
 
     const handleOpen = () => {
@@ -178,13 +173,13 @@ const PersonOverviewTable = () => {
                 <DialogContentText>
                     To create a new person fill in all required fields.
                 </DialogContentText>
-                <TextField autoFocus margin="dense" id="name" label="Name" type="text" fullWidth />
-                <TextField margin="dense" id="age" label="Age" type="number" fullWidth />
+                <TextField autoFocus margin="dense" id="name" label="Name" type="text" fullWidth onChange={(event) => setInputName(event.target.value as string)} />
+                <TextField margin="dense" id="age" label="Age" type="number" fullWidth onChange={(event) => setInputAge(parseInt(event.target.value as string))} />
                 <Select
                     className={classes.genderSelect}
                     fullWidth
-                    value={values.gender}
-                    onChange={handleChange}
+                    value={inputGender}
+                    onChange={(event) => setInputGender(event.target.value as PersonGender)}
                     inputProps={{
                         name: 'gender',
                         id: 'gender'

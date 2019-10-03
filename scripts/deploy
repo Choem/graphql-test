@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Check if kubectl is installed
+
+# Deploy updated images via kubectl
