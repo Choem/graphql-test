@@ -1,0 +1,23 @@
+apiVersion: skaffold/v1beta15
+kind: Config
+metadata:
+  name: graphql-test-skaffold
+build:
+  artifacts:
+    - image: graphql-test-ui:latest
+      context: .
+      sync:
+        infer: 
+          - "./"
+    docker:
+      dockerfile: Dockerfile
+      target: graphql-test-ui:latest
+deploy:
+  helm:
+    releases:
+      - name: test-release
+        chartPath: test
+        valueFiles: []
+  kubectl:
+    manifests:
+      - deployments/*.yaml
