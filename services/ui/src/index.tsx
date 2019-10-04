@@ -6,22 +6,49 @@ import { App } from './containers';
 
 import * as serviceWorker from './serviceWorker';
 import ApolloClient from 'apollo-client';
+import { HttpLink } from 'apollo-link-http';
+import { split } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloLink } from 'apollo-link';
 import { ApolloProvider } from '@apollo/react-hooks';
+import { WebSocketLink } from 'apollo-link-ws';
+import { getMainDefinition } from 'apollo-utilities';
+import { SnackbarProvider } from 'notistack';
 
-const apolloLink = new ApolloLink();
+const httpLink = new HttpLink({
+  uri: 'http://localhost:4000/graphql'
+});
+
+const wsLink = new WebSocketLink({
+  uri: `ws://localhost:5000/graphql/subscriptions`,
+  options: {
+    reconnect: true
+  }
+});
+
+const link = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+);
 
 const apolloClient = new ApolloClient({
-  link: apolloLink,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  link: link
 });
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
-    <Router>
-      <App />
-    </Router>
+    <SnackbarProvider maxSnack={1}>
+      <Router>
+        <App />
+      </Router>
+    </SnackbarProvider>
   </ApolloProvider>,
   document.getElementById('root')
 );
