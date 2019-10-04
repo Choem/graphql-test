@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Articles, PersonOverviewPage } from '..';
+import { ArticleOverviewPage, PersonOverviewPage } from '..';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     content: {
@@ -21,7 +21,7 @@ const Routing = () => {
             <div className={classes.toolbar} />
             <Switch>
                 <Route exact path="/" component={PersonOverviewPage} />
-                <Route path="/" component={Articles} />
+                <Route path="/articles" component={ArticleOverviewPage} />
             </Switch>
         </main>
     )

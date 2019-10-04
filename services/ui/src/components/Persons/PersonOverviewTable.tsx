@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles, Theme, createStyles, Table, TableHead, TableRow, TableCell, TableBody, Fab, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, Select, MenuItem, DialogActions, CircularProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { useCreatePersonMutation, PersonGender, useListPersonsQuery, Person } from '../../generated/graphql';
+import { useCreatePersonMutation, PersonGender, useListPersonsQuery } from '../../generated/graphql';
 import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -44,17 +44,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface PersonOverViewTableRow {
-  id: number;
-  name: string;
-  age: number;
-  gender: PersonGender;
-}
-
 const PersonOverviewTable = () => {
   const classes = useStyles();
-
-  const rows: PersonOverViewTableRow[] = [];
 
   const listPersonsQuery = useListPersonsQuery();
 
@@ -85,6 +76,7 @@ const PersonOverviewTable = () => {
         gender: inputGender
       }
     });
+
     setTimeout(() => {
       setIsOpen(false);
       setIsLoading(false);
@@ -124,7 +116,7 @@ const PersonOverviewTable = () => {
       );
     }
 
-    if (!rows.length) {
+    if (!listPersonsQuery.data!.listPersons.persons.length) {
       return (
         renderTableEmptyRow()
       );
@@ -225,7 +217,11 @@ const PersonOverviewTable = () => {
   };
 
   const renderFab = () => (
-    <Fab color="primary" aria-label="add" className={classes.fab}>
+    <Fab
+      color="primary"
+      aria-label="add"
+      className={classes.fab}
+      onClick={handleOpen}>
       <AddIcon />
     </Fab>
   );
@@ -234,7 +230,7 @@ const PersonOverviewTable = () => {
     <>
       {renderDialogs()}
       {renderTable()}
-      {rows.length > 0 &&
+      {listPersonsQuery.data && listPersonsQuery.data!.listPersons.persons.length > 0 &&
         renderFab()
       }
     </>

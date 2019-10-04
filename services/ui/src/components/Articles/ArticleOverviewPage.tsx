@@ -1,6 +1,6 @@
-import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
-import PersonOverviewTable from './PersonOverviewTable';
+import React from "react";
+import { Typography, makeStyles, createStyles, Theme } from "@material-ui/core";
+import ArticleOverviewTable from "./ArticleOverviewTable";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -12,14 +12,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const PersonOverviewPage = () => {
+const ArticleOverviewPage = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <PersonOverviewTable />
+      <ArticleOverviewTable />
     </div>
   );
-}
+};
 
-export default PersonOverviewPage;
+export default ArticleOverviewPage;

@@ -3,6 +3,6 @@ import Navigation from './Navigation';
 import Sidebar from './Sidebar';
 import Routing from './Routing';
 import PersonOverviewPage from './Persons';
-import Articles from './Articles';
+import ArticleOverviewPage from './Articles';
 
-export { Header, Navigation, Sidebar, Routing, PersonOverviewPage, Articles };
+export { Header, Navigation, Sidebar, Routing, PersonOverviewPage, ArticleOverviewPage };
