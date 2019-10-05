@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: middleware-deployment
-  namespace: graphql-test
 spec:
   replicas: 1
   selector:
@@ -13,12 +12,17 @@ spec:
       labels:
         component: middleware
     spec:
+      initContainers:
+        - name: init-database
+          image: busybox:1.28
+          command:
+            [
+              "sh",
+              "-c",
+              "until nslookup database-service; do echo waiting for database-service; sleep 2; done;",
+            ]
       containers:
         - name: middleware
-          image: graphql-test-middleware:latest
+          image: choem/graphql-test-middleware:latest
           ports:
             - containerPort: 4000
-          resources:
-            limits:
-              memory: "1G"
-              cpu: "500m"

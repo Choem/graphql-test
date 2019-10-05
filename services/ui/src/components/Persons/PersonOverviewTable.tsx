@@ -5,38 +5,10 @@ import { makeStyles, Theme, createStyles, Table, TableHead, TableRow, TableCell,
 import AddIcon from '@material-ui/icons/Add';
 import { useCreatePersonMutation, PersonGender, useListPersonsQuery } from '../../generated/graphql';
 import { useSnackbar } from 'notistack';
+import { useCommonStyles } from '../commonStyles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      position: 'relative',
-      width: '100%',
-      height: `calc(100vh - ${theme.mixins.toolbar.height})`
-    },
-    paper: {
-      marginTop: theme.spacing(3),
-      width: '100%',
-      overflowX: 'auto',
-      marginBottom: theme.spacing(2)
-    },
-    table: {},
-    addButton: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1)
-    },
-    progress_container: {
-      display: 'flex',
-      width: '100%',
-      justifyContent: 'center'
-    },
-    progress: {
-      margin: theme.spacing(2)
-    },
-    fab: {
-      position: 'fixed',
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
-    },
     genderSelect: {
       marginTop: theme.spacing(3),
       marginBottom: theme.spacing(1)
@@ -45,7 +17,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const PersonOverviewTable = () => {
-  const classes = useStyles();
+  const commonStyles = useCommonStyles();
+  const styles = useStyles();
+  const classes = { ...commonStyles, ...styles };
 
   const listPersonsQuery = useListPersonsQuery();
 
@@ -80,7 +54,7 @@ const PersonOverviewTable = () => {
     setTimeout(() => {
       setIsOpen(false);
       setIsLoading(false);
-    }, 250);
+    }, 500);
   };
 
   const handleOpen = () => {
@@ -116,7 +90,7 @@ const PersonOverviewTable = () => {
       );
     }
 
-    if (!listPersonsQuery.data!.listPersons.persons.length) {
+    if (!listPersonsQuery.data!.listPersons.count) {
       return (
         renderTableEmptyRow()
       );
@@ -230,7 +204,7 @@ const PersonOverviewTable = () => {
     <>
       {renderDialogs()}
       {renderTable()}
-      {listPersonsQuery.data && listPersonsQuery.data!.listPersons.persons.length > 0 &&
+      {listPersonsQuery.data && listPersonsQuery.data!.listPersons.count > 0 &&
         renderFab()
       }
     </>

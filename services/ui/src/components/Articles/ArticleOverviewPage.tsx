@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, makeStyles, createStyles, Theme } from "@material-ui/core";
+import { makeStyles, createStyles, Theme } from "@material-ui/core";
 import ArticleOverviewTable from "./ArticleOverviewTable";
 
 const useStyles = makeStyles((theme: Theme) =>

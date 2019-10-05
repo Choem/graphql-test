@@ -2,9 +2,6 @@
 
 set -u # Treat reference to undefined variables as errors
 
-# Declare params for script
-VM_DRIVER=--vm-driver=kvm2
-
 # Declare format or color functions
 success () {
   echo -e "\e[32m${1}\e[0m"
@@ -55,8 +52,7 @@ else
 fi
 
 # Boot minikube
-# minikube start \
-#   $VM_DRIVER
+minikube start -p graphql-test --cpus=2 --memory=2048 --disk-size=8GB --vm-driver=kvm2
 
 # Build services 
 # source "./scripts/build.sh"

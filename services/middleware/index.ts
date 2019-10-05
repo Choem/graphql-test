@@ -12,8 +12,8 @@ import { ArticleResolver } from './src/resolvers/ArticleResolver';
 export const app = express();
 export const httpServerPort = 4000;
 export const httpServer = app.listen(httpServerPort, async () => {
-  await main();
   console.info(`Listening on port ${httpServerPort}`);
+  await main();
 });
 
 let dbConnection: Connection;
