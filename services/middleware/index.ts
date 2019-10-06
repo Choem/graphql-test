@@ -53,8 +53,8 @@ async function main() {
   const apolloServer = new ApolloServer({
     schema,
     playground: {
-      endpoint: '/graphql',
-      subscriptionEndpoint: '/graphql/subscriptions'
+      endpoint: '/middleware/graphql',
+      subscriptionEndpoint: '/middleware/graphql/subscriptions'
     },
     subscriptions: {
       path: '/graphql/subscriptions',

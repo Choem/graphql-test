@@ -14,12 +14,12 @@ spec:
     spec:
       initContainers:
         - name: init-database
-          image: busybox:1.28
+          image: mysql/mysql-server:8.0.16
           command:
             [
               "sh",
               "-c",
-              "until nslookup database-service; do echo waiting for database-service; sleep 2; done;",
+              "while ! mysqladmin ping -h database-service --silent; do sleep 1; done",
             ]
       containers:
         - name: middleware

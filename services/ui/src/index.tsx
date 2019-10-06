@@ -15,11 +15,11 @@ import { getMainDefinition } from 'apollo-utilities';
 import { SnackbarProvider } from 'notistack';
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql'
+  uri: '/middleware/graphql'
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:5000/graphql/subscriptions`,
+  uri: `ws://${window.location.hostname}/middleware/graphql/subscriptions`,
   options: {
     reconnect: true
   }

@@ -12,4 +12,4 @@ spec:
           - path: /middleware/
             backend:
               serviceName: middleware-service
-              servicePort: 4000
+              servicePort: 80
