@@ -53,6 +53,7 @@ fi
 
 # Boot minikube
 minikube start -p graphql-test --cpus=2 --memory=2048 --disk-size=8GB --vm-driver=kvm2
+minikube -p graphql-test addons enable ingress
 
 # Build services 
 # source "./scripts/build.sh"

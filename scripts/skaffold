@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Set docker env to that of current minikube
+source <(minikube docker-env -p graphql-test)
+
+# Set config of skaffold to to the current profile
+skaffold config set --kube-context graphql-test local-cluster true
+
+# Start skaffold sync
+skaffold dev

@@ -16,6 +16,11 @@ export const httpServer = app.listen(httpServerPort, async () => {
   await main();
 });
 
+app.use((req, res, next) => {
+  console.log(req.url);
+  next();
+});
+
 let dbConnection: Connection;
 
 process.on('unhandledRejection', err => {
@@ -53,8 +58,8 @@ async function main() {
   const apolloServer = new ApolloServer({
     schema,
     playground: {
-      endpoint: '/middleware/graphql',
-      subscriptionEndpoint: '/middleware/graphql/subscriptions'
+      endpoint: '/graphql',
+      subscriptionEndpoint: '/graphql/subscriptions'
     },
     subscriptions: {
       path: '/graphql/subscriptions',
@@ -83,7 +88,7 @@ async function main() {
 async function connectDb() {
   return createConnection({
     type: "mysql",
-    host: "localhost",
+    host: process.env.DB_HOST || 'localhost',
     port: 3306,
     username: "root",
     password: "piraatkat",

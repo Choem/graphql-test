@@ -23,6 +23,10 @@ spec:
             ]
       containers:
         - name: middleware
-          image: choem/graphql-test-middleware:latest
+          image: choem/graphql-test-middleware
+          imagePullPolicy: Never
           ports:
             - containerPort: 4000
+          env:
+            - name: DB_HOST
+              value: database-service

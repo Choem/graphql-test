@@ -3,21 +3,34 @@ kind: Config
 metadata:
   name: graphql-test-skaffold
 build:
+  local:
+    push: false
+  tagPolicy:
+    sha256: {}
   artifacts:
-    - image: graphql-test-ui:latest
-      context: .
+    - image: graphql-test-ui
+      context: services/ui
       sync:
-        infer: 
-          - "./"
-    docker:
-      dockerfile: Dockerfile
-      target: graphql-test-ui:latest
+        infer:
+          - "**/*.html"
+          - "**/*.css"
+          - "**/*.ts"
+          - "**/*.tsx"
+          - "package.json"
+      docker:
+        dockerfile: Dockerfile
+    - image: graphql-test-middlware
+      context: services/middleware
+      sync:
+        infer:
+          - "**/*.ts"
+          - "**/*.js"
+          - "*.js"
+          - "package.json"
+      docker:
+        dockerfile: Dockerfile
 deploy:
-  helm:
-    releases:
-      - name: test-release
-        chartPath: test
-        valueFiles: []
   kubectl:
     manifests:
-      - deployments/*.yaml
+      - deployments/ui/deployment.yaml
+      - deployments/middleware/deployment.yaml
