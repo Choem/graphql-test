@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Define different variables containing mostly paths
+PATH="./services/$1"
+
+DOCKER_FILE="./services/$1/Dockerfile"
+DOCKER_IMAGE_NAME=$1
+
+LATEST_IMAGE_NAME=$DOCKER_IMAGE_NAME:latest
+NEW_IMAGE_NAME=$DOCKER_IMAGE_NAME:temp
+
+# Build docker image
+docker build $PATH -t $NEW_IMAGE_NAME -f $DOCKER_FILE
+
+# Get latest build ID's
+LATEST_DOCKER_ID=$(docker images --no-trunc -q ${LATEST_IMAGE_NAME})
+NEW_DOCKER_ID=$(docker inspect --format {{.Id}} ${NEW_IMAGE_NAME})
+
+# If they don't match it's a newer image otherwise do nothing
+if [ "$LATEST_DOCKER_ID" != "$NEW_DOCKER_ID" ]; then
+  docker tag $NEW_IMAGE_NAME $DOCKER_IMAGE_NAME:${NEW_DOCKER_ID:7:16}
+  docker tag $NEW_IMAGE_NAME $DOCKER_IMAGE_NAME:latest
+  echo "        Image changed, tagged: " ${NEW_DOCKER_ID:7:16}
+else
+    docker tag $NEW_IMAGE_NAME $DOCKER_IMAGE_NAME:${NEW_DOCKER_ID:7:16}
+    docker tag $NEW_IMAGE_NAME $DOCKER_IMAGE_NAME:latest
+    echo "        Nothing changed"
+fi

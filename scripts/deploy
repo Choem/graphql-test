@@ -1,5 +1,4 @@
 #!/bin/bash
 
-# Check if kubectl is installed
-
 # Deploy updated images via kubectl
+kubectl apply -f deployments/ -R

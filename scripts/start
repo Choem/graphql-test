@@ -1,62 +1,14 @@
 #!/bin/bash
 
-set -u # Treat reference to undefined variables as errors
-
-# Declare format or color functions
-success () {
-  echo -e "\e[32m${1}\e[0m"
-}
-
-error () {
-  echo -e "\e[31m${1}\e[0m"
-}
-
-# Check if minikube is installed
-MINIKUBE=$(minikube version)
-
-if [[ $MINIKUBE =~ "minikube version" ]] 
-then
-  success "Minikube is installed."
-else
-  error "Minikube is not installed. Consider installing it at the following url: \nhttps://kubernetes.io/docs/setup/learning-environment/minikube/"
-fi
-
-# Check if docker is installed
-DOCKER=$(docker version)
-
-if [[ $DOCKER =~  "Version" ]]
-then
-  success "Docker is installed."
-else
-  error "Docker is not installed. Consider installing it at the following url: \nhttps://docs.docker.com/install/"
-fi
-
-# Check if kubectl is installed
-KUBECTL=$(kubectl version --client)
-
-if [[ $KUBECTL =~ "Client Version" ]]
-then
-  success "Kubectl is installed."
-else
-  error "Kubectl is not installed. Consider installing it at the following url: \nhttps://kubernetes.io/docs/tasks/tools/install-kubectl/"
-fi
-
-# Check if skaffold is installed
-SKAFFOLD=$(skaffold version)
-
-if [[ $SKAFFOLD =~ "v0.39.0" ]]
-then
-  success "Skaffold is installed."
-else
-  error "Skaffold is not installed and optional. \nIt makes development of the cluster a lot easier. \nConsider installing it at the following url: \nhttps://skaffold.dev/docs/getting-started/"
-fi
+# Check dependencies
+source "./scripts/dependencies"
 
 # Boot minikube
-minikube start -p graphql-test --cpus=2 --memory=2048 --disk-size=8GB --vm-driver=kvm2
-minikube -p graphql-test addons enable ingress
+# minikube start -p graphql-test --cpus=2 --memory=2048 --disk-size=8GB --vm-driver=kvm2
+# minikube -p graphql-test addons enable ingress
 
 # Build services 
-# source "./scripts/build.sh"
+source "./scripts/build.sh"
 
 # Deploy services
-# source "./scripts/deploy.sh"
+source "./scripts/deploy.sh"
