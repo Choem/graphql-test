@@ -2,7 +2,7 @@
 
 set -e # Exit if the script encounters an error
 
-# Ensure that images that are build exist within the minikube docker context
+# Ensure that images that are build exist within the minikube docker environment
 eval $(minikube docker-env)
 
 # Build services or specific service
@@ -11,5 +11,5 @@ services=($(ls -d services/* | cut -f2 -d'/'))
 for service in "${services[@]}"
 do
   echo "Building image for ${service}"
-  source "build_image.sh" $service
+  source "./scripts/build_image" $service
 done

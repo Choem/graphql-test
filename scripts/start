@@ -4,11 +4,11 @@
 source "./scripts/dependencies"
 
 # Boot minikube
-# minikube start -p graphql-test --cpus=2 --memory=2048 --disk-size=8GB --vm-driver=kvm2
-# minikube -p graphql-test addons enable ingress
+minikube start -p graphql-test --cpus=2 --memory=2048 --disk-size=8GB --vm-driver=kvm2
+minikube -p graphql-test addons enable ingress
 
 # Build services 
-source "./scripts/build.sh"
+source "./scripts/build"
 
 # Deploy services
-source "./scripts/deploy.sh"
+source "./scripts/deploy"
