@@ -16,11 +16,6 @@ export const httpServer = app.listen(httpServerPort, async () => {
   await main();
 });
 
-app.use((req, res, next) => {
-  console.log(req.url);
-  next();
-});
-
 let dbConnection: Connection;
 
 process.on('unhandledRejection', err => {

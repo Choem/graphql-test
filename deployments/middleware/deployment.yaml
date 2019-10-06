@@ -23,8 +23,7 @@ spec:
             ]
       containers:
         - name: middleware
-          image: choem/graphql-test-middleware
-          imagePullPolicy: Never
+          image: choem/graphql-test-middleware:latest
           ports:
             - containerPort: 4000
           env:

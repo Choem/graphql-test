@@ -3,8 +3,7 @@ kind: Config
 metadata:
   name: graphql-test-skaffold
 build:
-  local:
-    push: false
+  local: {}
   tagPolicy:
     sha256: {}
   artifacts:
